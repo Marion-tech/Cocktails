@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
+import { ICocktail } from './interfaces/cocktail.interface';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
 })
-export class AppComponent {
-  title = 'Cocktails';
-}
+export class AppComponent {}
