@@ -1,13 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ICocktail } from '../interfaces/cocktail.interface';
 
 @Component({
-  selector: 'app-cocktail-list',
-  templateUrl: './cocktail-list.component.html',
-  styleUrls: ['./cocktail-list.component.scss'],
+  selector: 'app-cocktail-container',
+  templateUrl: './cocktail-container.component.html',
+  styleUrls: ['./cocktail-container.component.scss'],
 })
-export class CocktailListComponent {
-  cocktails: ICocktail[] = [
+export class CocktailContainerComponent implements OnInit {
+  public cocktails: ICocktail[] = [
     {
       name: 'Mojito',
       img: 'https://www.hangoverweekends.co.uk/uploads/images/mojito.jpg',
@@ -27,4 +27,15 @@ export class CocktailListComponent {
         'The classic tropical cocktail, with a distinctive look and taste. More of a smoothie as opposed to an alcoholic beverage. The modest yet perfect blend of coconut milk, rum and pineapple juice has been a firm favourite throughout the years.  ',
     },
   ];
+  public selectedCocktail!: ICocktail;
+
+  constructor() {}
+
+  ngOnInit(): void {
+    this.selectedCocktail = this.cocktails[0];
+  }
+
+  public showCocktail(index: number): void {
+    this.selectedCocktail = this.cocktails[index];
+  }
 }
