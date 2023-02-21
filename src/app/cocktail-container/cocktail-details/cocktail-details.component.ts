@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { ICocktail } from 'src/app/interfaces/cocktail.interface';
+import { ICocktail } from 'src/app/shared/interfaces/cocktail.interface';
 
 @Component({
   selector: 'app-cocktail-details',

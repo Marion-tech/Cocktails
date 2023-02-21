@@ -1,41 +1,40 @@
-import { Component, OnInit } from '@angular/core';
-import { ICocktail } from '../interfaces/cocktail.interface';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { ICocktail } from '../shared/interfaces/cocktail.interface';
+import { CocktailService } from '../shared/services/cocktail.service';
 
 @Component({
   selector: 'app-cocktail-container',
   templateUrl: './cocktail-container.component.html',
   styleUrls: ['./cocktail-container.component.scss'],
 })
-export class CocktailContainerComponent implements OnInit {
-  public cocktails: ICocktail[] = [
-    {
-      name: 'Mojito',
-      img: 'https://www.hangoverweekends.co.uk/uploads/images/mojito.jpg',
-      description:
-        'The Mojito complimenting summer perfectly with a fresh minty taste. The mixture of white rum, mint, lime juice, sugar and soda water is crisp and clean with a relatively low alcohol content, the soda water can be replaced with sprite or 7-up. When preparing a mojito always crush the mint leaves as opposed to dicing to unlock oils that will assist with enhancing the minty flavour.',
-    },
-    {
-      name: 'Cosmopolitan',
-      img: 'https://www.hangoverweekends.co.uk/uploads/images/cosmo.jpg',
-      description:
-        'The tangy concoction of vodka, triple sec, lime juice and cranberry juice has managed to leapfrog the venerable screwdriver as many vodka drinkers prefer the Cosmopolitan’s cleaner and slightly tart taste. The keys to the preparation of a Cosmopolitan are a good brand of cranberry juice and Cointreau Triple Sec, two essential elements to the drink.',
-    },
-    {
-      name: 'Pina Colada',
-      img: 'https://www.hangoverweekends.co.uk/uploads/images/pina_colada_cocktail.jpg',
-      description:
-        'The classic tropical cocktail, with a distinctive look and taste. More of a smoothie as opposed to an alcoholic beverage. The modest yet perfect blend of coconut milk, rum and pineapple juice has been a firm favourite throughout the years.  ',
-    },
-  ];
+export class CocktailContainerComponent implements OnInit, OnDestroy {
+  public cocktails: ICocktail[] = [];
   public selectedCocktail!: ICocktail;
+  public subscription?: Subscription = new Subscription();
 
-  constructor() {}
+  constructor(private cocktailService: CocktailService) {}
 
   ngOnInit(): void {
-    this.selectedCocktail = this.cocktails[0];
+    this.subscription?.add(
+      this.cocktailService.cocktails$.subscribe((cocktails: ICocktail[]) => {
+        this.cocktails = cocktails;
+      })
+    );
+    this.subscription?.add(
+      this.cocktailService.selectedCocktail$.subscribe(
+        (selectedCocktail: ICocktail) => {
+          this.selectedCocktail = selectedCocktail;
+        }
+      )
+    );
   }
 
-  public showCocktail(index: number): void {
-    this.selectedCocktail = this.cocktails[index];
+  ngOnDestroy(): void {
+    this.subscription?.unsubscribe();
+  }
+
+  public selectCocktail(index: number): void {
+    this.cocktailService.selectCocktail(index);
   }
 }

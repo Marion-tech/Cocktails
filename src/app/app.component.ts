@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ICocktail } from './interfaces/cocktail.interface';
+import { ICocktail } from './shared/interfaces/cocktail.interface';
 
 @Component({
   selector: 'app-root',
